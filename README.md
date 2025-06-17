@@ -9,7 +9,7 @@ This repository is a curated collection of 50 SQL questions from LeetCode that I
 
 ---
 
-## 1757. Recyclable and Low Fat Products
+### **1757. Recyclable and Low Fat Products**
 
 ```sql
 SELECT product_id
@@ -19,7 +19,7 @@ WHERE low_fats = 'Y' AND recyclable = 'Y';
 
 ---
 
-## 584. Find Customer Referee
+### **584. Find Customer Referee**
 
 ```sql
 SELECT name
@@ -29,7 +29,7 @@ WHERE referee_id != 2 OR referee_id IS NULL;
 
 ---
 
-## 595. Big Countries
+### **595. Big Countries**
 
 ```sql
 SELECT name, population, area
@@ -39,7 +39,7 @@ WHERE area >= 3000000 OR population >= 25000000;
 
 ---
 
-## 1148. Article Views I
+### **1148. Article Views I**
 
 ```sql
 SELECT DISTINCT author_id as id
@@ -51,7 +51,7 @@ ORDER BY author_id;
 
 ---
 
-## 1683. Invalid Tweets
+### **1683. Invalid Tweets**
 
 ```sql
 SELECT tweet_id 
