@@ -1,4 +1,4 @@
-# LeetCode SQL 50 Questions – Personal Interview Revision Guide
+# LeetCode SQL 50 Questions
 
 This repository is a curated collection of 50 SQL questions from LeetCode that I solved as part of my SQL interview preparation.
 
