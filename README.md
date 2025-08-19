@@ -42,11 +42,10 @@ WHERE area >= 3000000 OR population >= 25000000;
 ### **1148. Article Views I**
 
 ```sql
-SELECT DISTINCT author_id as id
+SELECT DISTINCT author_id AS id
 FROM Views
-WHERE viewer_id >= 1
-AND author_id = viewer_id
-ORDER BY author_id;
+WHERE author_id = viewer_id
+ORDER BY id;
 ```
 
 ---
