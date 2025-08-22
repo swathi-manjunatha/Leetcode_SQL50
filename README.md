@@ -190,6 +190,14 @@ WHERE id IN (
 );
 ```
 
+```sql
+SELECT m.name
+FROM Employee m, Employee r
+WHERE m.id=r.managerId
+GROUP BY m.id,m.name
+HAVING COUNT(*) >= 5
+```
+
 ---
 
 ### **1934. Confirmation Rate**
