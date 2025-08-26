@@ -299,19 +299,13 @@ GROUP BY project_id
 ### **1633. Percentage of Users Attended a Contest**
 
 ```sql
-SELECT u.user_id, 
-       ROUND(COUNT(a.user_id)*100.0 / (SELECT COUNT(*) FROM Users), 2) AS percentage
-FROM Users u 
-LEFT JOIN Register a 
-ON u.user_id = a.user_id
-GROUP BY u.user_id;
-```
-```sql
-SELECT r.contest_id, ROUND(COUNT(DISTINCT(r.user_id))*100/(select count(*) from Users),2) AS percentage
-FROM Users u JOIN Register r
-ON u.user_id=r.user_id
+SELECT 
+    r.contest_id,
+    ROUND(COUNT(user_id)* 100.0/ (Select COUNT(*) FROM Users) ,
+    2) AS percentage
+FROM Register r
 GROUP BY r.contest_id
-ORDER BY percentage DESC, r.contest_id ASC;
+ORDER BY  percentage DESC, r.contest_id ASC
 ```
 ---
 
