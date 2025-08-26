@@ -277,6 +277,23 @@ ON p.employee_id = e.employee_id
 GROUP BY p.project_id;
 ```
 
+```sql
+WITH ProjEmp AS(
+    SELECT 
+    p.project_id,
+    p.employee_id,
+    e.name,
+    e.experience_years
+FROM Project p LEFT JOIN Employee e
+ON p.employee_id=e.employee_id
+)
+SELECT
+    project_id,
+    ROUND(AVG(experience_years),
+    2) AS average_years
+FROM ProjEmp
+GROUP BY project_id
+```
 ---
 
 ### **1633. Percentage of Users Attended a Contest**
