@@ -230,14 +230,41 @@ ORDER BY rating DESC;
 ### **1251. Average Selling Price**
 
 ```sql
-SELECT p.product_id, 
-       ROUND(SUM(price * units) / SUM(units), 2) AS average_price
-FROM Prices p 
-JOIN UnitsSold u 
-ON p.product_id = u.product_id AND u.purchase_date BETWEEN p.start_date AND p.end_date
-GROUP BY p.product_id;
+WITHOUT CTE:
+SELECT
+    p.product_id,
+     COALESCE(
+        ROUND(
+            SUM(p.price * u.units) * 1.0 / NULLIF(SUM(u.units),0),
+            2),
+            0) AS average_price
+FROM Prices p LEFT JOIN UnitsSold u
+ON p.product_id=u.product_id
+AND u.purchase_date BETWEEN p.start_date AND p.end_date
+GROUP BY p.product_id
 ```
+```sql
+WITH CTE:
+WITH SalesWithPrice AS (
+    SELECT
+        p.product_id,
+        p.price,
+        u.units
+    FROM Prices p
+    LEFT JOIN UnitsSold u
+      ON p.product_id = u.product_id
+     AND u.purchase_date BETWEEN p.start_date AND p.end_date
+)
 
+SELECT
+    product_id,
+    COALESCE(
+        ROUND(SUM(price * units) * 1.0 / NULLIF(SUM(units), 0), 2),
+        0
+    ) AS average_price
+FROM SalesWithPrice
+GROUP BY product_id;
+```
 ---
 
 ### **1075. Project Employees I**
