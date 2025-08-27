@@ -418,16 +418,6 @@ JOIN
 ### **550. Game Play Analysis IV**
 
 ```sql
-SELECT player_id, MIN(event_date) AS first_login
-FROM (
-    SELECT player_id, event_date, 
-           RANK() OVER (PARTITION BY player_id ORDER BY event_date) AS rk
-    FROM Activity
-) AS t
-WHERE rk = 1
-GROUP BY player_id;
-```
-```sql
 SELECT 
     ROUND(
         COUNT(DISTINCT CASE 
