@@ -517,8 +517,12 @@ GROUP BY user_id;
 ```sql
 SELECT MAX(num) AS num
 FROM MyNumbers
-GROUP BY num
-HAVING COUNT(*) = 1;
+WHERE num IN (
+    SELECT num
+    FROM MyNumbers
+    GROUP BY num
+    HAVING COUNT(*) = 1
+);
 ```
 
 ---
