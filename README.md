@@ -452,23 +452,25 @@ GROUP BY teacher_id;
 
 #### 1141. User Activity for the Past 30 Days I
 
-* Use `DATEDIFF()` to filter last 30 days.
-* Use `DISTINCT` to count unique users per day.
 
 ```sql
-SELECT activity_date as day,
-       COUNT(DISTINCT user_id) as active_users
-FROM Activity
-WHERE activity_date BETWEEN DATE_SUB('2019-07-27', INTERVAL 29 DAY) AND '2019-07-27'
-GROUP BY activity_date
-```
-```sql
-SELECT 
-    TO_CHAR(activity_date, 'YYYY-MM-DD') AS day,
+--MYSQL
+SELECT
+    activity_date AS day,
     COUNT(DISTINCT user_id) AS active_users
 FROM Activity
-WHERE activity_date BETWEEN DATE '2019-06-28' AND DATE '2019-07-27'
+WHERE activity_date BETWEEN DATE('2019-07-27') - INTERVAL 29 DAY AND DATE('2019-07-27')
 GROUP BY activity_date;
+
+```
+```sql
+--ORACLE
+SELECT
+TO_CHAR(activity_date,'YYYY-MM-DD') AS day,
+COUNT(DISTINCT user_id ) AS active_users
+FROM Activity
+WHERE activity_date BETWEEN TO_DATE('2019-07-27','YYYY-MM-DD') - 29 AND TO_DATE('2019-07-27','YYYY-MM-DD')
+GROUP BY activity_date
 ```
 ---
 
