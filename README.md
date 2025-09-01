@@ -599,7 +599,17 @@ WITH Lagged AS (
 ) SELECT DISTINCT(num) AS ConsecutiveNums 
 FROM Lagged where num=prev_num AND num= next_num
 ```
+```sql
+WITH Lagged AS (
+    SELECT id,
+        num,
+        LAG(num) OVER(ORDER BY id) AS prev_num,
+        LEAD(num) OVER(ORDER BY id) AS next_num
+    FROM Logs
+```
 
+) SELECT DISTINCT(num) AS ConsecutiveNums 
+FROM Lagged where num=prev_num AND num= next_num
 ---
 
 ####  1164. Product Price at a Given Date
