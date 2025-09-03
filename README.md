@@ -688,19 +688,15 @@ WHERE rn = 1;
 #### 1907. Count Salary Categories
 
 ```sql
-SELECT 'Low Salary' AS category, SUM(CASE WHEN income < 20000 THEN 1 ELSE 0 END) AS accounts_count 
-FROM Accounts
-UNION ALL
-SELECT 'Average Salary' AS category, SUM(CASE WHEN income BETWEEN 20000 AND 50000 THEN 1 ELSE 0 END) 
-FROM Accounts
-UNION ALL
-SELECT 'High Salary' AS category, SUM(CASE WHEN income > 50000 THEN 1 ELSE 0 END) 
-FROM Accounts;
-
------
--- Step 1: Group actual data into categories and count
-WITH SalaryCategory AS (
-    SELECT 
+WITH salary_classes AS (
+    SELECT 'Low Salary' AS category FROM dual
+    UNION ALL
+    SELECT 'Average Salary' FROM dual
+    UNION ALL
+    SELECT 'High Salary' FROM dual
+),
+classified AS (
+    SELECT
         CASE 
             WHEN income < 20000 THEN 'Low Salary'
             WHEN income BETWEEN 20000 AND 50000 THEN 'Average Salary'
@@ -708,27 +704,14 @@ WITH SalaryCategory AS (
         END AS category
     FROM Accounts
 ),
-CategoryCounts AS (
+counts AS (
     SELECT category, COUNT(*) AS accounts_count
-    FROM SalaryCategory
+    FROM classified
     GROUP BY category
-),
--- Step 2: Ensure all 3 categories are returned
-AllCategories AS (
-    SELECT 'Low Salary' AS category
-    UNION ALL
-    SELECT 'Average Salary'
-    UNION ALL
-    SELECT 'High Salary'
 )
--- Final step: Left join to fill 0s
-SELECT 
-    a.category,
-    COALESCE(c.accounts_count, 0) AS accounts_count
-FROM AllCategories a
-LEFT JOIN CategoryCounts c
-ON a.category = c.category;
-
+SELECT s.category, COALESCE(c.accounts_count, 0) AS accounts_count
+FROM salary_classes s
+LEFT JOIN counts c ON s.category = c.category;
 ```
 ---
 
