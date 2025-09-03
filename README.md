@@ -765,40 +765,34 @@ ORDER BY id
 #### 1341. Movie Rating
 
 ```sql
-WITH MovieRatingCount AS (
-    SELECT u.name AS name, COUNT(*) AS rating_count
-    FROM Users u 
-    JOIN MovieRating m ON u.user_id = m.user_id
-    GROUP BY u.name
-),
-TopUser AS (
-    SELECT name
+SELECT name AS results
+FROM Users
+WHERE user_id = (
+    SELECT user_id
     FROM (
-        SELECT name, rating_count
-        FROM MovieRatingCount
-        ORDER BY rating_count DESC, name
-    )
-    WHERE ROWNUM = 1
-),
-FebAvgRating AS (
-    SELECT mo.title AS movie_title, AVG(mr.rating) AS avg_rating
-    FROM Movies mo 
-    JOIN MovieRating mr ON mo.movie_id = mr.movie_id
-    WHERE TO_CHAR(mr.created_at, 'YYYY-MM') = '2020-02'
-    GROUP BY mo.title
-),
-TopMovie AS (
-    SELECT movie_title
-    FROM (
-        SELECT movie_title, avg_rating
-        FROM FebAvgRating
-        ORDER BY avg_rating DESC, movie_title
+        SELECT user_id
+        FROM MovieRating
+        GROUP BY user_id
+        ORDER BY COUNT(*) DESC, user_id
     )
     WHERE ROWNUM = 1
 )
-SELECT name AS results FROM TopUser
+
 UNION ALL
-SELECT movie_title AS results FROM TopMovie;
+
+SELECT title AS results
+FROM Movies
+WHERE movie_id = (
+    SELECT movie_id
+    FROM (
+        SELECT movie_id
+        FROM MovieRating
+        WHERE created_at BETWEEN DATE '2020-02-01' AND DATE '2020-02-29'
+        GROUP BY movie_id
+        ORDER BY AVG(rating) DESC, movie_id
+    )
+    WHERE ROWNUM = 1
+);
 
 ```
 
