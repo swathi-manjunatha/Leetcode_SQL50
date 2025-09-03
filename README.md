@@ -722,14 +722,20 @@ LEFT JOIN counts c ON s.category = c.category;
 #### 1978. Employees Whose Manager Left the Company
 
 ```sql
+--using subquery
 SELECT employee_id
 FROM Employees
-WHERE salary < 30000
-  AND manager_id IS NOT NULL
-  AND manager_id NOT IN (SELECT employee_id FROM Employees)
+WHERE manager_id IS NOT NULL
+  AND salary < 30000
+  AND manager_id NOT IN (
+      SELECT employee_id
+      FROM Employees
+  )
 ORDER BY employee_id;
+
 ```
 ```sql
+--using self join
 SELECT e.employee_id
 FROM Employees e LEFT JOIN Employees m
 ON e.manager_id=m.employee_id
