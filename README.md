@@ -822,8 +822,37 @@ SELECT
 FROM Rolling7Days
 WHERE visited_on >= (SELECT MIN(visited_on) + 6 FROM DailyTotals)
 ORDER BY visited_on;
-
-
+```
+```sql
+WITH DailyTotals AS (
+    SELECT 
+        visited_on,
+        SUM(amount) AS daily_amount
+    FROM Customer
+    GROUP BY visited_on
+),
+RollingSums AS (
+    SELECT 
+        visited_on,
+        SUM(daily_amount) OVER (
+            ORDER BY visited_on
+            ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+        ) AS amount,
+        AVG(daily_amount) OVER (
+            ORDER BY visited_on
+            ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+        ) AS average_amount
+    FROM DailyTotals
+)
+SELECT 
+    visited_on,
+    amount,
+    ROUND(average_amount, 2) AS average_amount
+FROM RollingSums
+WHERE visited_on >= (
+    SELECT MIN(visited_on) + 6 FROM DailyTotals
+)
+ORDER BY visited_on;
 ```
 
 ---
