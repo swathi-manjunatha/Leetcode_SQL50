@@ -1056,7 +1056,7 @@ ORDER BY
 ```sql
 SELECT user_id, name, mail
 FROM Users
-WHERE mail REGEXP '^[a-zA-Z][a-zA-Z0-9_.-]*@leetcode[.]com$'
+WHERE REGEXP_LIKE(mail, '^[a-zA-Z][a-zA-Z0-9_.-]*@leetcode\.com$');
 ```
 
 ---
