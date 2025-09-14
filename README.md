@@ -845,7 +845,7 @@ RollingSums AS (
     FROM DailyTotals
 )
 SELECT 
-    visited_on,
+    TO_CHAR(visited_on, 'YYYY-MM-DD') AS visited_on,
     amount,
     ROUND(average_amount, 2) AS average_amount
 FROM RollingSums
